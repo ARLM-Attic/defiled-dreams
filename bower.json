@@ -1,0 +1,20 @@
+{
+  "name": "doomed-dreams",
+  "version": "0.0.0",
+  "homepage": "https://github.com/jondot/gulpjs-phaser",
+  "authors": [
+    "Kyle Kemp <kyle@seiyria.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "localforage": "*"
+  }
+}
