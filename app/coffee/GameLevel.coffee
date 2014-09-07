@@ -79,10 +79,11 @@ class Playing extends Phaser.State
     @player.body.fixedRotation = yes
 
     @player.body.setMaterial @game.playerMaterial
-    #@player.body.setCollisionGroup @game.cg.player
-    #@player.body.collides @game.cg.platform
+    @player.body.setCollisionGroup @game.cg.player
+    @player.body.collides @game.cg.platform
 
-    console.log @player.body
+    console.log @game.cg.player, @game.cg.platform
+    console.log @player.body.data.shapes[0], @game.physics.p2.boundsCollisionGroup.mask
 
     @game.camera.follow @player
 

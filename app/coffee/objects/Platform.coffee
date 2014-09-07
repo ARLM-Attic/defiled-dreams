@@ -12,15 +12,15 @@ class Platform extends Phaser.Sprite
 
 class HorizontalPlatform extends Platform
   setupMotion: ->
-    #@body.velocity.x = 50
+    @body.velocity.x = 50
 
-    #@game.time.events.loop Phaser.Timer.SECOND*5, (-> @body.velocity.x = @game.physics.p2.mpxi(@body.velocity.x*-1)), @
-    @game.add.tween @body.velocity
-      .to {x: '+100'}, 2000, Phaser.Easing.Linear.None
-      .to {x: '-100'}, 2000, Phaser.Easing.Linear.None
-      .yoyo()
-      .loop()
-      .start()
+    @game.time.events.loop Phaser.Timer.SECOND*5, (-> @body.velocity.x = @game.physics.p2.mpxi(@body.velocity.x*-1)), @
+    #@game.add.tween @body.velocity
+    #  .to {x: '+100'}, 2000, Phaser.Easing.Linear.None
+    #  .to {x: '-100'}, 2000, Phaser.Easing.Linear.None
+    #  .yoyo()
+    #  .loop()
+    #  .start()
 
 class VerticalPlatform extends Platform
   setupMotion: ->
