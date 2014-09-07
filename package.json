@@ -1,34 +1,26 @@
 {
   "name": "defiled-dreams",
-  "author": {
-    "name": "Kyle Kemp",
-    "email": "kyle@seiyria.com",
-    "url": "http://github.com/seiyria/defiled-dreams"
-  },
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.0",
   "dependencies": {
-    "gulp-ftp": "~0.1.1",
-    "gulp-coffee": "~1.4.1"
+    "grunt": "*",
+    "grunt-coffeelint": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-connect": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-usemin": "*",
+    "grunt-sed": "*"
   },
-  "scripts": {
-    "install": "bower install"
+  
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/seiyria/defiled-dreams.git"
   },
-  "devDependencies": {
-    "connect": "~2.12.0",
-    "gulp": "~3.5.0",
-    "gulp-coffee": "~1.4.0",
-    "gulp-concat": "~2.1.7",
-    "gulp-livereload": "~0.3.0",
-    "gulp-sass": "~0.6.0",
-    "gulp-uglify": "~0.2.0",
-    "gulp-util": "~2.2.13",
-    "tiny-lr": "0.0.5",
-    "coffee-script": "~1.7.1",
-    "gulp-browserify": "~0.4.0",
-    "coffeeify": "~0.6.0",
-    "gulp-imagemin": "~0.1.4",
-    "optipng-bin": "~0.3.1"
-  },
-  "repository": {}
+  
+  "keywords": ["game"],
+  "readmeFilename": "README.md",
+  "license": "MIT"
 }
