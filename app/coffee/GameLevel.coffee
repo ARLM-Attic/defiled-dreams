@@ -34,18 +34,33 @@ class Playing extends Phaser.State
 
     @loadGroups()
     @loadPlayer()
+    @loadPlatformLayer()
 
   update: ->
 
   startPhysics: ->
     @game.physics.startSystem Phaser.Physics.P2JS
-    @game.physics.p2.gravity.y = 500
-    @game.physics.p2.restitution = 0.2;
+    @game.physics.p2.gravity.y = 1000
+    @game.physics.p2.restitution = 0.2
 
     @game.physics.p2.convertTilemap @map, @tileLayer
 
+    @game.physics.p2.setBoundsToWorld yes, yes, yes, yes, no
+
+    @game.physics.p2.setImpactEvents yes
+    @game.world.enableBodySleeping = yes
+
+    @game.playerMaterial = @game.physics.p2.createMaterial 'player'
+    @game.platformMaterial = @game.physics.p2.createMaterial 'platform'
+
+    @game.physics.p2.createContactMaterial @game.playerMaterial, @game.platformMaterial, {friction: 10, restitution: 0}
+
   loadGroups: ->
     @players = @game.add.group()
+
+    @game.cg =
+      player: @game.physics.p2.createCollisionGroup()
+      platform: @game.physics.p2.createCollisionGroup()
 
   loadMap: ->
     @map = @game.add.tilemap "world-#{@levelNumber}"
@@ -58,13 +73,22 @@ class Playing extends Phaser.State
     @tileLayer.resizeWorld()
 
   loadPlayer: ->
-    @player = new Player @game, 96, 96, 'player'
+    @game.player = @player = new Player @game, 96, @game.world.height-96, 'player'
     @players.add @player
     @game.physics.p2.enable @player
     @player.body.fixedRotation = yes
-    @player.body.collideWorldBounds = yes
+
+    @player.body.setMaterial @game.playerMaterial
+    #@player.body.setCollisionGroup @game.cg.player
+    #@player.body.collides @game.cg.platform
+
+    console.log @player.body
 
     @game.camera.follow @player
+
+  loadPlatformLayer: ->
+    @map.createFromObjects 'PlatformLayer', @gids.PLATFORM_HORIZONTAL, 'platforms', 1, true, false, undefined, HorizontalPlatform
+    @map.createFromObjects 'PlatformLayer', @gids.PLATFORM_VERTICAL, 'platforms', 0, true, false, undefined, VerticalPlatform
 
 class GameLevel extends Playing
   constructor: (@levelNumber) ->

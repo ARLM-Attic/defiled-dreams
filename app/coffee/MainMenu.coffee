@@ -17,7 +17,6 @@ class MainMenu extends ScreenState
     for i in [1..@game.MAX_LEVELS]
       @buttons.push new MenuTextButton @game, 140+(32*i-1)+(3*i-1), 140, "#{i}"
 
-
 class MenuTextButton
   constructor: (@game, x, y, text) ->
     @button = @game.add.button x,y,'electric', (()->@game.state.start "world-#{text}"), @, 1,0,2

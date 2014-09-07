@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 
   moveSpeed: 150
-  jumpSpeed: 350
+  jumpSpeed: 450
   climbSpeed: 150
   jumpTimer: 0
 
@@ -17,7 +17,6 @@ class Player extends Phaser.Sprite
     @respawnKey = @game.input.keyboard.addKey Phaser.Keyboard.R
 
   update: ->
-
     #handle respawns
     respawnButtonIsDown = @respawnKey.isDown or
       @game.input.gamepad.isDown Phaser.Gamepad.XBOX360_RIGHT_TRIGGER
@@ -55,7 +54,7 @@ class Player extends Phaser.Sprite
 
     if jumpButtonIsDown and @game.time.now > @jumpTimer && @canJump()
       @body.moveUp @jumpSpeed
-      @jumpTimer = @game.time.now + 750
+      @jumpTimer = @game.time.now + 500
 
   changeFace: (face) ->
     return if @facing is face
@@ -77,7 +76,5 @@ class Player extends Phaser.Sprite
         result = yes if d > 0.5
 
     result
-
-
 
 window.Player = Player
