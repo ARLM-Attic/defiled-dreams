@@ -29,10 +29,10 @@ class Playing extends Phaser.State
     WARP: 43
 
   create: ->
+    @loadGroups()
     @loadMap()
     @startPhysics()
 
-    @loadGroups()
     @loadPlayer()
     @loadPlatformLayer()
 
@@ -40,6 +40,8 @@ class Playing extends Phaser.State
 
   startPhysics: ->
     @game.physics.startSystem Phaser.Physics.P2JS
+    @loadCollisionGroups()
+
     @game.physics.p2.gravity.y = 1000
     @game.physics.p2.restitution = 0.2
 
@@ -48,19 +50,21 @@ class Playing extends Phaser.State
     @game.physics.p2.setBoundsToWorld yes, yes, yes, yes, no
 
     @game.physics.p2.setImpactEvents yes
-    @game.world.enableBodySleeping = yes
 
     @game.playerMaterial = @game.physics.p2.createMaterial 'player'
     @game.platformMaterial = @game.physics.p2.createMaterial 'platform'
 
-    @game.physics.p2.createContactMaterial @game.playerMaterial, @game.platformMaterial, {friction: 10, restitution: 0}
+    @game.physics.p2.createContactMaterial @game.playerMaterial, @game.platformMaterial, friction: 100
 
   loadGroups: ->
     @players = @game.add.group()
 
+  loadCollisionGroups: ->
     @game.cg =
       player: @game.physics.p2.createCollisionGroup()
       platform: @game.physics.p2.createCollisionGroup()
+
+    @game.physics.p2.updateBoundsCollisionGroup()
 
   loadMap: ->
     @map = @game.add.tilemap "world-#{@levelNumber}"
@@ -80,7 +84,11 @@ class Playing extends Phaser.State
 
     @player.body.setMaterial @game.playerMaterial
     @player.body.setCollisionGroup @game.cg.player
-    @player.body.collides @game.cg.platform
+    @player.body.collides @game.physics.p2.boundsCollisionGroup
+    @player.body.collides @game.cg.platform, (player, platform) -> console.log "test"
+    #@player.body.data.shapes[0].collisionMask |= 3
+
+    console.log @game.physics.p2
 
     console.log @game.cg.player, @game.cg.platform
     console.log @player.body.data.shapes[0], @game.physics.p2.boundsCollisionGroup.mask

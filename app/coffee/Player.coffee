@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 
   moveSpeed: 150
-  jumpSpeed: 450
+  jumpSpeed: 750
   climbSpeed: 150
   jumpTimer: 0
 
@@ -62,6 +62,7 @@ class Player extends Phaser.Sprite
     @animations.play face
 
   canJump: ->
+    return yes
     yAxis = p2.vec2.fromValues 0, 1
     result = no
 
