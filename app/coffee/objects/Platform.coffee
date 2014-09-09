@@ -5,11 +5,11 @@ class Platform extends Phaser.Sprite
     @game.physics.p2.enable @
     @body.kinematic = yes
 
-    @body.setMaterial @game.platformMaterial
+    @body.setMaterial @game.mat.platform
     @body.setCollisionGroup @game.cg.platform
     @body.collides @game.cg.player
 
-    console.log @body.data.shapes[0]
+    #console.log @body.data.shapes[0]
 
     @setupMotion()
 
@@ -17,13 +17,13 @@ class HorizontalPlatform extends Platform
   setupMotion: ->
     @body.velocity.x = 50
 
-    @game.time.events.loop Phaser.Timer.SECOND*5, (-> @body.velocity.x = @game.physics.p2.mpxi(@body.velocity.x*-1)), @
-    #@game.add.tween @body
-    # .to {x: '+100'}, 2000, Phaser.Easing.Linear.None
-    # .to {x: '-100'}, 2000, Phaser.Easing.Linear.None
-    # .yoyo()
-    # .loop()
-    # .start()
+    #@game.time.events.loop Phaser.Timer.SECOND*5, (-> @body.velocity.x = @game.physics.p2.mpxi(@body.velocity.x*-1)), @
+    @game.add.tween @body
+     .to {x: '+100'}, 2000, Phaser.Easing.Linear.None
+     .to {x: '-100'}, 2000, Phaser.Easing.Linear.None
+     .yoyo()
+     .loop()
+     .start()
 
 class VerticalPlatform extends Platform
   setupMotion: ->

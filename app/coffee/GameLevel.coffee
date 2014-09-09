@@ -44,27 +44,50 @@ class Playing extends Phaser.State
 
     @game.physics.p2.gravity.y = 1000
     @game.physics.p2.restitution = 0.2
-
-    @game.physics.p2.convertTilemap @map, @tileLayer
+    @game.physics.p2.friction = 0
 
     @game.physics.p2.setBoundsToWorld yes, yes, yes, yes, no
 
     @game.physics.p2.setImpactEvents yes
 
-    @game.playerMaterial = @game.physics.p2.createMaterial 'player'
-    @game.platformMaterial = @game.physics.p2.createMaterial 'platform'
-
-    @game.physics.p2.createContactMaterial @game.playerMaterial, @game.platformMaterial, friction: 100
+    @loadCollisionMaterials()
 
   loadGroups: ->
     @players = @game.add.group()
+
+  loadCollisionMaterials: ->
+
+    @game.mat =
+      world: @game.physics.p2.createMaterial 'world'
+      floor: @game.physics.p2.createMaterial 'floor'
+      playerMaterial: @game.physics.p2.createMaterial 'player'
+      platformMaterial: @game.physics.p2.createMaterial 'platform'
+
+    @game.physics.p2.setWorldMaterial @game.mat.world, yes, yes, yes, yes
+
+    worldContact = @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.world
+    worldContact.restitution = 100
+
+    platformContact = @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.platform
+    platformContact.friction = 1
+    platformContact.restitution = 100
+
+    floorContact = @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.floor
+    floorContact.friction = 0
+    floorContact.restitution = 100
 
   loadCollisionGroups: ->
     @game.cg =
       player: @game.physics.p2.createCollisionGroup()
       platform: @game.physics.p2.createCollisionGroup()
+      tiles: @game.physics.p2.createCollisionGroup()
 
     @game.physics.p2.updateBoundsCollisionGroup()
+
+    _.each (@game.physics.p2.convertTilemap @map, @tileLayer), (body) =>
+      body.setCollisionGroup @game.cg.tiles
+      body.collides @game.cg.player
+      body.static = yes
 
   loadMap: ->
     @map = @game.add.tilemap "world-#{@levelNumber}"
@@ -81,17 +104,13 @@ class Playing extends Phaser.State
     @players.add @player
     @game.physics.p2.enable @player
     @player.body.fixedRotation = yes
+    @player.body.setCircle 16, 0, 0
 
-    @player.body.setMaterial @game.playerMaterial
+    @player.body.setMaterial @game.mat.player
     @player.body.setCollisionGroup @game.cg.player
-    @player.body.collides @game.physics.p2.boundsCollisionGroup
+    @player.body.collides @game.cg.tiles
     @player.body.collides @game.cg.platform, (player, platform) -> console.log "test"
-    #@player.body.data.shapes[0].collisionMask |= 3
-
-    console.log @game.physics.p2
-
-    console.log @game.cg.player, @game.cg.platform
-    console.log @player.body.data.shapes[0], @game.physics.p2.boundsCollisionGroup.mask
+    #@player.body.onBeginContact.add (contact, causer, shape, data) -> console.log causer
 
     @game.camera.follow @player
 

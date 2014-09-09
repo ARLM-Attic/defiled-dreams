@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 
   moveSpeed: 150
-  jumpSpeed: 750
+  jumpSpeed: 450
   climbSpeed: 150
   jumpTimer: 0
 
@@ -54,7 +54,7 @@ class Player extends Phaser.Sprite
 
     if jumpButtonIsDown and @game.time.now > @jumpTimer && @canJump()
       @body.moveUp @jumpSpeed
-      @jumpTimer = @game.time.now + 500
+      @jumpTimer = @game.time.now + 300
 
   changeFace: (face) ->
     return if @facing is face
@@ -62,7 +62,6 @@ class Player extends Phaser.Sprite
     @animations.play face
 
   canJump: ->
-    return yes
     yAxis = p2.vec2.fromValues 0, 1
     result = no
 
@@ -74,6 +73,7 @@ class Player extends Phaser.Sprite
       if c.bodyA is @body.data or c.bodyB is @body.data
         d = p2.vec2.dot c.normalA, yAxis
         d*= -1 if c.bodyA is @body.data
+        console.log "worked" if d > 0.5
         result = yes if d > 0.5
 
     result

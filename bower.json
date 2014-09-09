@@ -2,7 +2,7 @@
   "name": "defiled-dreams",
   "version": "0.0.0",
   "dependencies": {
-    "phaser": null
+    "phaser": null,
+    "lodash": "~2.4.1"
   }
 }
-
