@@ -58,23 +58,23 @@ class Playing extends Phaser.State
   loadCollisionMaterials: ->
 
     @game.mat =
-      world: @game.physics.p2.createMaterial 'world'
-      floor: @game.physics.p2.createMaterial 'floor'
-      playerMaterial: @game.physics.p2.createMaterial 'player'
+      world:            @game.physics.p2.createMaterial 'world'
+      floor:            @game.physics.p2.createMaterial 'floor'
+      playerMaterial:   @game.physics.p2.createMaterial 'player'
       platformMaterial: @game.physics.p2.createMaterial 'platform'
 
     @game.physics.p2.setWorldMaterial @game.mat.world, yes, yes, yes, yes
 
-    worldContact = @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.world
-    worldContact.restitution = 100
+    @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.world,
+      restitution: 0.7
 
-    platformContact = @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.platform
-    platformContact.friction = 1
-    platformContact.restitution = 100
+    @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.platform,
+      friction: 1
+      restitution: 0.7
 
-    floorContact = @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.floor
-    floorContact.friction = 0
-    floorContact.restitution = 100
+    @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.floor,
+      friction: 1
+      restitution: 0.7
 
   loadCollisionGroups: ->
     @game.cg =
