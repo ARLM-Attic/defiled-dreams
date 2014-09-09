@@ -33,8 +33,6 @@ class Player extends Phaser.Sprite
 
     climbButtonIsDown = @cursors.up.isDown
 
-    console.log parseInt @body.velocity.y
-
     if moveLeftButtonIsDown
       @body.moveLeft @moveSpeed
       @changeFace 'left'
