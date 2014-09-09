@@ -42,7 +42,7 @@ class Playing extends Phaser.State
     @game.physics.startSystem Phaser.Physics.P2JS
     @loadCollisionGroups()
 
-    @game.physics.p2.gravity.y = 1000
+    @game.physics.p2.gravity.y = 3000
     @game.physics.p2.restitution = 0.2
     @game.physics.p2.friction = 0
 
@@ -58,10 +58,10 @@ class Playing extends Phaser.State
   loadCollisionMaterials: ->
 
     @game.mat =
-      world:            @game.physics.p2.createMaterial 'world'
-      floor:            @game.physics.p2.createMaterial 'floor'
-      playerMaterial:   @game.physics.p2.createMaterial 'player'
-      platformMaterial: @game.physics.p2.createMaterial 'platform'
+      world:    @game.physics.p2.createMaterial 'world'
+      floor:    @game.physics.p2.createMaterial 'floor'
+      player:   @game.physics.p2.createMaterial 'player'
+      platform: @game.physics.p2.createMaterial 'platform'
 
     @game.physics.p2.setWorldMaterial @game.mat.world, yes, yes, yes, yes
 
@@ -70,7 +70,7 @@ class Playing extends Phaser.State
 
     @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.platform,
       friction: 1
-      restitution: 0.7
+      restitution: 0
 
     @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.floor,
       friction: 1
@@ -78,9 +78,9 @@ class Playing extends Phaser.State
 
   loadCollisionGroups: ->
     @game.cg =
-      player: @game.physics.p2.createCollisionGroup()
-      platform: @game.physics.p2.createCollisionGroup()
-      tiles: @game.physics.p2.createCollisionGroup()
+      player:     @game.physics.p2.createCollisionGroup()
+      platform:   @game.physics.p2.createCollisionGroup()
+      tiles:      @game.physics.p2.createCollisionGroup()
 
     @game.physics.p2.updateBoundsCollisionGroup()
 
@@ -104,13 +104,12 @@ class Playing extends Phaser.State
     @players.add @player
     @game.physics.p2.enable @player
     @player.body.fixedRotation = yes
-    @player.body.setCircle 16, 0, 0
+    #@player.body.setCircle 16, 0, 0
 
     @player.body.setMaterial @game.mat.player
     @player.body.setCollisionGroup @game.cg.player
     @player.body.collides @game.cg.tiles
     @player.body.collides @game.cg.platform, (player, platform) -> console.log "test"
-    #@player.body.onBeginContact.add (contact, causer, shape, data) -> console.log causer
 
     @game.camera.follow @player
 

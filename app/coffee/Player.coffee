@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 
   moveSpeed: 150
-  jumpSpeed: 450
+  jumpSpeed: 750
   climbSpeed: 150
   jumpTimer: 0
 
@@ -73,7 +73,6 @@ class Player extends Phaser.Sprite
       if c.bodyA is @body.data or c.bodyB is @body.data
         d = p2.vec2.dot c.normalA, yAxis
         d*= -1 if c.bodyA is @body.data
-        console.log "worked" if d > 0.5
         result = yes if d > 0.5
 
     result
