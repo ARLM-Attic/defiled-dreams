@@ -1,7 +1,7 @@
 class Player extends Phaser.Sprite
 
   moveSpeed: 150
-  jumpSpeed: 750
+  jumpSpeed: 450
   climbSpeed: 150
   jumpTimer: 0
 
@@ -33,6 +33,8 @@ class Player extends Phaser.Sprite
 
     climbButtonIsDown = @cursors.up.isDown
 
+    console.log parseInt @body.velocity.y
+
     if moveLeftButtonIsDown
       @body.moveLeft @moveSpeed
       @changeFace 'left'
@@ -42,7 +44,7 @@ class Player extends Phaser.Sprite
       @changeFace 'right'
 
     else
-      @body.velocity.x = 0
+      @body.velocity.x = 0 if 0 isnt parseInt @body.velocity.y
 
       if @facing isnt ''
         @animations.stop()

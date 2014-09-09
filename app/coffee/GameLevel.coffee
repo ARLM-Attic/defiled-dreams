@@ -42,9 +42,9 @@ class Playing extends Phaser.State
     @game.physics.startSystem Phaser.Physics.P2JS
     @loadCollisionGroups()
 
-    @game.physics.p2.gravity.y = 3000
+    @game.physics.p2.gravity.y = 1000
     @game.physics.p2.restitution = 0.2
-    @game.physics.p2.friction = 0
+    @game.physics.p2.friction = 0.4
 
     @game.physics.p2.setBoundsToWorld yes, yes, yes, yes, no
 
