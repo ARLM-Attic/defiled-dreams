@@ -35,6 +35,9 @@ class Playing extends Phaser.State
 
     @loadPlayer()
     @loadPlatformLayer()
+    @loadTrapLayer()
+
+    @finalize()
 
   update: ->
 
@@ -50,10 +53,13 @@ class Playing extends Phaser.State
 
     @game.physics.p2.setImpactEvents yes
 
+    @game.physics.p2.setPostBroadphaseCallback (player, obj) -> if obj.sprite?.canCollide then obj.sprite.canCollide player.sprite else yes
+
     @loadCollisionMaterials()
 
   loadGroups: ->
     @players = @game.add.group()
+    @gameObjects = @game.add.group()
 
   loadCollisionMaterials: ->
 
@@ -73,14 +79,14 @@ class Playing extends Phaser.State
       restitution: 0
 
     @game.physics.p2.createContactMaterial @game.mat.player, @game.mat.floor,
-      friction: 1
+      friction: 0.4
       restitution: 0.7
 
   loadCollisionGroups: ->
     @game.cg =
       player:     @game.physics.p2.createCollisionGroup()
-      platform:   @game.physics.p2.createCollisionGroup()
       tiles:      @game.physics.p2.createCollisionGroup()
+      objects:    @game.physics.p2.createCollisionGroup()
 
     @game.physics.p2.updateBoundsCollisionGroup()
 
@@ -109,13 +115,19 @@ class Playing extends Phaser.State
     @player.body.setMaterial @game.mat.player
     @player.body.setCollisionGroup @game.cg.player
     @player.body.collides @game.cg.tiles
-    @player.body.collides @game.cg.platform #, (player, platform) -> console.log "test"
+    @player.body.collides @game.cg.objects, (player, object) -> object.sprite.collide player
 
     @game.camera.follow @player
 
   loadPlatformLayer: ->
-    @map.createFromObjects 'PlatformLayer', @gids.PLATFORM_HORIZONTAL, 'platforms', 1, true, false, undefined, HorizontalPlatform
-    @map.createFromObjects 'PlatformLayer', @gids.PLATFORM_VERTICAL, 'platforms', 0, true, false, undefined, VerticalPlatform
+    @map.createFromObjects 'PlatformLayer', @gids.PLATFORM_HORIZONTAL, 'platforms', 1, true, false, @gameObjects, HorizontalPlatform
+    @map.createFromObjects 'PlatformLayer', @gids.PLATFORM_VERTICAL, 'platforms', 0, true, false, @gameObjects, VerticalPlatform
+
+  loadTrapLayer: ->
+    @map.createFromObjects 'TrapLayer', @gids.BLOCK_FADE, 'fading-block', 0, true, false, @gameObjects, FadingBlock
+
+  finalize: ->
+    @gameObjects.callAll 'initialize'
 
 class GameLevel extends Playing
   constructor: (@levelNumber) ->
